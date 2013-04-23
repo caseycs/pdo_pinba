@@ -3,6 +3,18 @@ namespace PDOPinba;
 
 class PDO extends \PDO
 {
+    public function __construct()
+    {
+        $tags = array('group' => 'mysql', 'op' => 'connect');
+        $timer = pinba_timer_start($tags);
+
+        $args = func_get_args();
+        $result = call_user_func_array(array('parent', '__construct'), $args);
+
+        pinba_timer_stop($timer);
+        return $result;
+    }
+
     public function beginTransaction()
     {
         $tags = array('group' => 'mysql', 'op' => 'begin');
