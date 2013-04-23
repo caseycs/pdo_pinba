@@ -1,0 +1,20 @@
+{
+    "name": "ikondrashov/pdo-pinba",
+    "type": "library",
+    "description": "Wrapper to native PDO classes with pinba timers",
+    "keywords": ["pdo", "database", "pinba"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ilia Kondrashov",
+            "email": "caseycs@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+
+    },
+    "autoload": {
+        "psr-0": { "PDOPinba": "src/" }
+    }
+}
