@@ -1,5 +1,5 @@
 {
-    "name": "ikondrashov/pdo-pinba",
+    "name": "casey/pdo-pinba",
     "type": "library",
     "description": "Wrapper to native PDO classes with pinba timers",
     "keywords": ["pdo", "database", "pinba"],
