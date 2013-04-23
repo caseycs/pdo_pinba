@@ -55,11 +55,13 @@ class PDO extends \PDO
 
     public static function getQueryType($queryText)
     {
-        $type = strtolower(substr(ltrim($queryText), 0, 6));
-        if (in_array($type, array('begin', 'commit', 'rollback', 'insert', 'update', 'delete', 'select'))) {
-            return $type;
-        } else {
-            return 'query';
+        $tmp = strtolower(substr(ltrim($queryText), 0, 8));
+        $types = array('begin', 'commit', 'rollback', 'insert', 'update', 'delete', 'select');
+        foreach ($types as $type) {
+            if (0 === strpos($tmp, $type)) {
+                return $type;
+            }
         }
+        return 'unrecognized';
     }
 }
