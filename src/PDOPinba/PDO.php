@@ -47,7 +47,7 @@ class PDO extends \PDO
         $tags = array(
             'group' => 'mysql',
             'op' => self::getQueryType($statement),
-            'tbls' => $this->extractTables($statement)
+//            'tbls' => $this->extractTables($statement)
         );
         $data = array('sql' => $statement);
         $timer = pinba_timer_start($tags, $data);
