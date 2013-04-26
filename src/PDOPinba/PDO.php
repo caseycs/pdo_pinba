@@ -44,7 +44,11 @@ class PDO extends \PDO
 
     public function exec($statement)
     {
-        $tags = array('group' => 'mysql', 'op' => self::getQueryType($statement));
+        $tags = array(
+            'group' => 'mysql',
+            'op' => self::getQueryType($statement),
+            'tbls' => $this->extractTables($statement)
+        );
         $data = array('sql' => $statement);
         $timer = pinba_timer_start($tags, $data);
         $result = parent::exec($statement);
@@ -75,5 +79,25 @@ class PDO extends \PDO
             }
         }
         return 'unrecognized';
+    }
+
+    public static function extractTables($sql)
+    {
+        $raw = '';
+        if (preg_match_all('~from(?<tables>.*?)(join|where|group)~i', $sql, $tmp)) {
+            $raw .= $tmp['tables'][0] . '_';
+        }
+
+        if (preg_match_all('~join(?<table>.*?)on~i', $sql, $tmp)) {
+            $raw .= join('_', $tmp['table']);
+        }
+
+        if ($raw) {
+            $raw = rtrim(str_replace(array(' ', "\t"), '', $raw), '_');
+            $raw = str_replace(',', '_', $raw);
+            return $raw;
+        } else {
+            return false;
+        }
     }
 }
