@@ -1,6 +1,6 @@
 pdo_pinba
 =========
 
-Wrapper to native PDO classes with pinba timers
+Wrapper to native PHP PDO exntension classes with Pinba timers
 
 Learn more about Pinba: http://pinba.org/
