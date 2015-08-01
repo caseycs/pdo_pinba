@@ -30,23 +30,4 @@ class PDOTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame($expected, \PDOPinba\PDO::getQueryType($sql));
     }
-
-    public function provider_extractTables()
-    {
-        return array(
-            array('select * from a,b,c where', 'a_b_c'),
-            array('select * from a , b , c join', 'a_b_c'),
-            array('select * from a join b.c on', 'a_b.c'),
-            array('select * from a join b on 1=2 join c on 3=4', 'a_b_c'),
-            array('select * from a , b  join c , d on', 'a_b_c_d'),
-        );
-    }
-
-    /**
-     * @dataProvider provider_extractTables
-     */
-    public function test_extractTables($sql, $expected)
-    {
-        $this->assertSame($expected, \PDOPinba\PDO::extractTables($sql));
-    }
 }

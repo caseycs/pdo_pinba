@@ -3,9 +3,13 @@ namespace PDOPinba;
 
 class PDO extends \PDO
 {
+    public static $pinbaTag1Name = 'group';
+    public static $pinbaTag1Value = 'pdo';
+    public static $pinbaTag2Name = 'op';
+
     public function __construct()
     {
-        $tags = array('group' => 'mysql', 'op' => 'connect');
+        $tags = array(self::$pinbaTag1Name => self::$pinbaTag1Value, self::$pinbaTag2Name => 'connect');
         $timer = pinba_timer_start($tags);
 
         $args = func_get_args();
@@ -17,7 +21,7 @@ class PDO extends \PDO
 
     public function beginTransaction()
     {
-        $tags = array('group' => 'mysql', 'op' => 'begin');
+        $tags = array(self::$pinbaTag1Name => self::$pinbaTag1Value, self::$pinbaTag2Name => 'begin');
         $timer = pinba_timer_start($tags);
         $result = parent::beginTransaction();
         pinba_timer_stop($timer);
@@ -26,7 +30,7 @@ class PDO extends \PDO
 
     public function commit()
     {
-        $tags = array('group' => 'mysql', 'op' => 'commit');
+        $tags = array(self::$pinbaTag1Name => self::$pinbaTag1Value, self::$pinbaTag2Name => 'commit');
         $timer = pinba_timer_start($tags);
         $result = parent::commit();
         pinba_timer_stop($timer);
@@ -35,7 +39,7 @@ class PDO extends \PDO
 
     public function rollBack()
     {
-        $tags = array('group' => 'mysql', 'op' => 'rollback');
+        $tags = array(self::$pinbaTag1Name => self::$pinbaTag1Value, self::$pinbaTag2Name => 'rollback');
         $timer = pinba_timer_start($tags);
         $result = parent::rollBack();
         pinba_timer_stop($timer);
@@ -45,9 +49,8 @@ class PDO extends \PDO
     public function exec($statement)
     {
         $tags = array(
-            'group' => 'mysql',
-            'op' => self::getQueryType($statement),
-//            'tbls' => $this->extractTables($statement)
+            self::$pinbaTag1Name => self::$pinbaTag1Value,
+            self::$pinbaTag2Name => self::getQueryType($statement),
         );
         $data = array('sql' => $statement);
         $timer = pinba_timer_start($tags, $data);
@@ -79,25 +82,5 @@ class PDO extends \PDO
             }
         }
         return 'unrecognized';
-    }
-
-    public static function extractTables($sql)
-    {
-        $raw = '';
-        if (preg_match_all('~from(?<tables>.*?)(join|where|group)~i', $sql, $tmp)) {
-            $raw .= $tmp['tables'][0] . '_';
-        }
-
-        if (preg_match_all('~join(?<table>.*?)on~i', $sql, $tmp)) {
-            $raw .= join('_', $tmp['table']);
-        }
-
-        if ($raw) {
-            $raw = rtrim(str_replace(array(' ', "\t"), '', $raw), '_');
-            $raw = str_replace(',', '_', $raw);
-            return $raw;
-        } else {
-            return false;
-        }
     }
 }

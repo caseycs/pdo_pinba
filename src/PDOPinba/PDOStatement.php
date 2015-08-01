@@ -13,9 +13,8 @@ class PDOStatement
     public function execute(array $input_parameters = null)
     {
         $tags = array(
-            'group' => 'mysql',
-            'op' => PDO::getQueryType($this->PDOStatement->queryString),
-//            'tbls' => PDO::extractTables($this->PDOStatement->queryString),
+            PDO::$pinbaTag1Name => PDO::$pinbaTag1Value,
+            PDO::$pinbaTag2Name => PDO::getQueryType($this->PDOStatement->queryString),
         );
         $data = array('sql' => $this->PDOStatement->queryString);
         $timer = pinba_timer_start($tags, $data);
