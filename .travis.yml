@@ -4,15 +4,16 @@ php:
   - 5.4
   - 5.5
   - 5.6
-
 services:
   - mysql
-
-install:
-  - composer install
-
 before_script:
+  - git clone https://github.com/tony2001/pinba_extension.git
+  - cd pinba_extension
+  - phpize
+  - bash configure
+  - make
   - mysql -e 'create database pdo_pinba_test;'
-
+  - cd ../
+  - composer install
 script:
-  - phpunit 
+  - php -d extension=pinba_extension/modules/pinba.so vendor/bin/phpunit --bootstrap phpunit.bootstrap.php

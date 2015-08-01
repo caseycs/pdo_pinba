@@ -59,6 +59,11 @@ class PDO extends \PDO
         return $result;
     }
 
+    /**
+     * Actually it returns PDOPinba\PDOStatement but for code-completion i'll fake it
+     *
+     * @return \PDOStatement
+     */
     public function query()
     {
         $args = func_get_args();

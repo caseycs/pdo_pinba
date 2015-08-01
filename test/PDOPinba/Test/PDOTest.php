@@ -3,7 +3,7 @@ namespace PDOPinba\Test;
 
 class PDOTest extends \PHPUnit_Framework_TestCase
 {
-    public function provider_getQueryType()
+    public function providerGetQueryType()
     {
         return array(
             array('select * from', 'select'),
@@ -24,9 +24,9 @@ class PDOTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider provider_getQueryType
+     * @dataProvider providerGetQueryType
      */
-    public function test_getQueryType($sql, $expected)
+    public function testGetQueryType($sql, $expected)
     {
         $this->assertSame($expected, \PDOPinba\PDO::getQueryType($sql));
     }
