@@ -25,7 +25,7 @@ class PDOFunctionalTest extends \PHPUnit_Framework_TestCase
 
         $pdoRaw = new \PDO('mysql:dbname=pdo_pinba_test', 'travis');
         $row = $pdoRaw->query('SELECT * FROM test')->fetch(\PDO::FETCH_ASSOC);
-        $this->assertSame(array('id' => 10), $row);
+        $this->assertSame(array('id' => '10'), $row);
     }
 
     public function testTransactionRollback()
@@ -35,7 +35,7 @@ class PDOFunctionalTest extends \PHPUnit_Framework_TestCase
         $pdo->exec('CREATE TABLE test (id INT);');
         $pdo->beginTransaction();
         $pdo->exec('INSERT INTO test VALUES (10);');
-        $pdo->commit();
+        $pdo->rollBack();
 
         $pdoRaw = new \PDO('mysql:dbname=pdo_pinba_test', 'travis');
         $rows = $pdoRaw->query('SELECT * FROM test')->fetchAll(\PDO::FETCH_ASSOC);
@@ -49,8 +49,7 @@ class PDOFunctionalTest extends \PHPUnit_Framework_TestCase
         $pdo->exec('CREATE TABLE test (id INT);');
         $pdo->exec('INSERT INTO test VALUES (10);');
 
-        $pdoRaw = new \PDO('mysql:dbname=pdo_pinba_test', 'travis');
-        $row = $pdoRaw->query('SELECT * FROM test')->fetch(\PDO::FETCH_ASSOC);
-        $this->assertSame(array('id' => 10), $row);
+        $row = $pdo->query('SELECT * FROM test')->fetch(\PDO::FETCH_ASSOC);
+        $this->assertSame(array('id' => '10'), $row);
     }
 }
